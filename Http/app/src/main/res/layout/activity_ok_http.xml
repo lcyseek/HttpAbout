@@ -10,10 +10,11 @@
         android:orientation="horizontal">
 
         <Button
-            android:onClick="getText"
+            android:id="@+id/btn"
+            android:onClick="getString"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GetText"
+            android:text="GetString"
             android:textAllCaps="false"/>
 
         <Button
@@ -24,44 +25,49 @@
             android:textAllCaps="false"/>
 
         <Button
-            android:onClick="getMp3"
+            android:onClick="getWait"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GetMp3"
+            android:text="GetWait"
             android:textAllCaps="false"/>
 
         <Button
-            android:onClick="post"
+            android:onClick="put"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Post"
+            android:text="Put"
             android:textAllCaps="false"/>
 
         <Button
-            android:onClick="someTest"
+            android:onClick="putByStream"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SomeText"
+            android:text="PutByStream"
             android:textAllCaps="false"/>
 
         <Button
-            android:onClick="okHttpActivity"
+            android:onClick="putFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OkHttpActivity"
+            android:text="PutFile"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:onClick="putPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PutPart"
             android:textAllCaps="false"/>
 
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/et_result"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>

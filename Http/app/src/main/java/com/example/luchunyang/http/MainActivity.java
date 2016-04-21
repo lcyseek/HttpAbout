@@ -1,5 +1,6 @@
 package com.example.luchunyang.http;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import java.util.Map;
 * 2.HttpUrlConnection直接支持GZIP压缩；HttpClient也支持，但要自己写代码处理；我们之前测试HttpUrlConnection的GZIP压缩在传大文件分包trunk时有问题，只适合小文件，不过这个BUG后来官方说已经修复了；
 * 3.HttpUrlConnection直接支持系统级连接池，即打开的连接不会直接关闭，在一段时间内所有程序可共用；HttpClient当然也能做到，但毕竟不如官方直接系统底层支持好；
 * HttpUrlConnection直接在系统层面做了缓存策略处理，加快重复请求的速度。
+* 在Android 2.2版本之前，HttpClient拥有较少的bug，因此使用它是最好的选择。
+* 而在Android 2.3版本及以后，HttpURLConnection则是最佳的选择。它的API简单，体积较小，因而非常适用于Android项目
 *
 * okhttp   compile 'com.squareup.okhttp:okhttp:2.4.0'
 * Android-Async-Http compile 'com.loopj.android:android-async-http:1.4.9'
@@ -82,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void post(View view) {
         new Thread(new PostRunnable()).start();
+    }
+
+    public void okHttpActivity(View view) {
+        startActivity(new Intent(this,OkHttpActivity.class));
     }
 
 
