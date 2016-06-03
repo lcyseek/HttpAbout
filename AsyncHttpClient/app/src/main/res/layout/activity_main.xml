@@ -15,6 +15,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:layout_marginTop="10dp"
         android:textAllCaps="false"
         android:padding="10dp"
         android:text="getImage"
@@ -22,6 +23,27 @@
         android:onClick="getImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"
+        android:padding="10dp"
+        android:text="post"
+        android:textSize="25sp"
+        android:onClick="post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"
+        android:padding="10dp"
+        android:text="syncHttp"
+        android:textSize="25sp"
+        android:onClick="syncHttp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <ImageView
         android:id="@+id/iv"
