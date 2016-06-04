@@ -11,8 +11,11 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         //设置连接超时。如果网址为GOOGLE，三秒后就返回
         client.setConnectTimeout(3000);
+
+        //RequestParams 这个参数多个用途  get里面是设置拼接在url后面的参数
         RequestParams params = new RequestParams();
         params.put("username","seek");
         params.put("userpwd","123456");
@@ -120,6 +125,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    public void getMp3(View view) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+//        params.put("keyword", URLEncodedUtils.parse("心太软","utf-8"));
+    }
+
+
     public void post(View view) throws FileNotFoundException {
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -173,5 +186,31 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
 
+    }
+
+
+    //有道笔记api
+    //参数说明：
+    //type - 返回结果的类型，固定为data
+    //doctype - 返回结果的数据格式，xml或json或jsonp
+    //version - 版本，当前最新版本为1.1
+    //q - 要翻译的文本，必须是UTF-8编码，字符长度不能超过200个字符，需要进行urlencode编码
+    //only - 可选参数，dict表示只获取词典数据，translate表示只获取翻译数据，默认为都获取
+    //注： 词典结果只支持中英互译，翻译结果支持英日韩法俄西到中文的翻译以及中文到英语的翻译
+    public void getYouDao(View view) {
+        String url = "http://fanyi.youdao.com/openapi.do?keyfrom=lcyseek&key=15707994&type=data&doctype=json&version=1.1&q=good";
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(this,url,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                System.out.println(response.toString());
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 }

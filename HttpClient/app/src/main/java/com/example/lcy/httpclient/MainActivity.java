@@ -18,10 +18,12 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,7 +46,7 @@ public class MainActivity extends Activity {
     }
 
     public void get(View view) throws IOException {
-        new Thread(new GetRunnable()).start();
+        new Thread(new GetTextRunnable()).start();
     }
 
     public void getImage(View view) {
@@ -53,6 +55,10 @@ public class MainActivity extends Activity {
 
     public void post(View view) {
         new Thread(new PostRunnable()).start();
+    }
+
+    public void getMp3(View view) {
+        new Thread(new GetMp3Runnable()).start();
     }
 
     class PostRunnable implements Runnable{
@@ -70,18 +76,24 @@ public class MainActivity extends Activity {
                 list.add(pair);
                 list.add(pair1);
 
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list,"utf-8");
+                HttpEntity entity = new UrlEncodedFormEntity(list,"utf-8");
+                FileEntity fileEntity = new FileEntity(new File("somefile.txt"),"text/plain; charset=\"UTF-8\"");
 
                 /************************************************/
 
                 HttpPost post = new HttpPost("http://www.baidu.com");
+
                 //设置请求体内容
                 post.setEntity(entity);
+//                post.setEntity(fileEntity);
 
                 HttpResponse response = client.execute(post);
                 if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                     System.out.println("post 成功");
                 }
+
+                post.abort();
+
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -89,8 +101,46 @@ public class MainActivity extends Activity {
         }
     }
 
-    class GetRunnable implements Runnable{
+    class GetMp3Runnable implements Runnable{
 
+        @Override
+        public void run() {
+            try {
+                HttpClient client = new DefaultHttpClient();
+
+                ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
+                NameValuePair pair = new BasicNameValuePair("keyword","心太软");
+                list.add(pair);
+
+                String url = "http://mobilecdn.kugou.com/api/v3/search/song"+"?"+URLEncodedUtils.format(list,"utf-8");
+
+                HttpGet get = new HttpGet(url);
+                HttpResponse response = client.execute(get);
+                if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                    HttpEntity entity = response.getEntity();
+                    InputStream is = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+                    String data = "";
+                    String line;
+                    while((line = reader.readLine()) != null){
+                        data += line;
+                    }
+
+                    is.close();
+                    reader.close();
+
+                    System.out.println(data);
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    class GetTextRunnable implements Runnable{
         @Override
         public void run() {
 
@@ -99,9 +149,6 @@ public class MainActivity extends Activity {
                 //得到HttpClient对象
                 HttpClient client = new DefaultHttpClient();
 
-                HttpGet requst = new HttpGet(BAIDU);
-
-
                 /*******************提交带参数的get请求.************/
                 ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
                 NameValuePair pair = new BasicNameValuePair("key","value");
@@ -109,8 +156,19 @@ public class MainActivity extends Activity {
                 list.add(pair);
                 list.add(pair1);
 
+
+                //URLEncodedUtils 和 URLEncoder 的区别 : URLEncoder是java的，只能把一个字符串转码。
+                //而URLEncodedUtils是HttpClient的，可以把一个ArrayList<NameValuePair>一起转化,比较方便
                 String url = "http://www.baidu.com" + "?" + URLEncodedUtils.format(list,"utf-8");
+                //System.out.println(url);//http://www.baidu.com?key=value&key1=value1
                 /************************************************/
+
+
+                HttpGet requst = new HttpGet(BAIDU);
+
+                //设置请求头
+                requst.setHeader("Connection","Keep-Alive");
+                requst.setHeader("Accept-Charset","GB2312,utf-8;q=0.7,*;q=0.7");
 
 
                 //客户端使用GET方式执行请教，获得服务器端的回应response
