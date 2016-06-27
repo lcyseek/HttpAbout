@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "syncHttp: start!");
                 //同步请求.要运行在线程里.
                 SyncHttpClient client = new SyncHttpClient();
-                client.get(BAIDU, new AsyncHttpResponseHandler() {
+                client.get(GOOGLE, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Log.i(TAG, "onSuccess: "+new String(responseBody));
@@ -174,13 +174,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "onFailure: "+statusCode);
                     }
                 });
-
-                try {
-                    Thread.sleep(8000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+                //阻塞的。
                 Log.i(TAG, "syncHttp: end!");
             }
         }).start();
